@@ -52,25 +52,27 @@ df = df[df["mobile"].map(lambda r: r != [])]
 df = df[df["mobile"].notna()]
 df = df.fillna("")
 test_df = df.head(3)
-print(test_df.info())
 
 mobiles = np.asarray(db_connect.getMobile())
 count = 0
+# print(df.head(20))
 
 for index, row in test_df.iterrows():
     name        = row["name"]
+    mobile      = row["mobile"]
     gender      = row["gender"]
     address     = row["address"]
-    mobile      = row["mobile"]
     source_lead = row["source_lead"]
     note        = row["note"]
     page_id     = row["page_id"]
 
-    values = (name, gender, address, mobile, source_lead, note, page_id)
+    values = (name, mobile, gender, address, source_lead, note, page_id)
 
     if mobile not in mobiles:
-        db_connect.insertData(name, gender, address, mobile, source_lead, note, page_id)
+        db_connect.insertData(name, mobile, gender, address, source_lead, note, page_id)
         count += 1
+    else:
+        print("Ops something went wrong!!! Your phone number existed in MCI DB")
 db_connect.database.commit()
 db_connect.database.close()
 print(f"I just imported {count} rows to MCI DB")
