@@ -4,9 +4,6 @@ import pymysql
 # pymysql.install_as_MySQLdb()
 
 
-
-  
-
 host = "202.92.4.71"
 user = "qfzovpphosting_thaitn"
 password = "Xngancon9x"
@@ -19,8 +16,6 @@ def getMobile():
     query = """ SELECT mobile FROM nhanvien_elead """
     cursor.execute(query)
     result = cursor.fetchall()
-    database.commit()
-    database.close()
     print("I just fetched data from MCI DB")
     return result
 
@@ -30,11 +25,6 @@ def insertData(name, mobile, gender, address, source_lead, note, page_id):
                 VALUES (%s, %s, %s, %s, %s, %s, %s)"""
 
     values = (name, mobile, gender, address, source_lead, note, page_id)
-
     cursor.execute(query, values)
-    print("Done")
-    database.commit()
-    database.close()
-
-
+   
 

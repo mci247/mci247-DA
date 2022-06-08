@@ -1,4 +1,3 @@
-from unittest import result
 import requests
 import math
 import pandas as pd
@@ -52,27 +51,28 @@ for i in range(5):
 df = df[df["mobile"].map(lambda r: r != [])]
 df = df[df["mobile"].notna()]
 df = df.fillna("")
-
-test_df = df.tail(5)
-print(test_df)
+test_df = df.head(3)
+print(test_df.info())
 
 mobiles = np.asarray(db_connect.getMobile())
 count = 0
 
-
 for index, row in test_df.iterrows():
-    name        = test_df.name[index]
-    gender      = test_df.gender[index]
-    address     = test_df.address[index]
-    mobile      = test_df.mobile[index]
-    source_lead = test_df.source_lead[index]
-    note        = test_df.note[index]
-    page_id     = test_df.page_id[index]
+    name        = row["name"]
+    gender      = row["gender"]
+    address     = row["address"]
+    mobile      = row["mobile"]
+    source_lead = row["source_lead"]
+    note        = row["note"]
+    page_id     = row["page_id"]
+
+    values = (name, gender, address, mobile, source_lead, note, page_id)
+
     if mobile not in mobiles:
-        db_connect.insertData(name = name, mobile = mobile, gender = gender, address = address, source_lead = source_lead, note = note)
+        db_connect.insertData(name, gender, address, mobile, source_lead, note, page_id)
         count += 1
+db_connect.database.commit()
+db_connect.database.close()
 print(f"I just imported {count} rows to MCI DB")
-
-
 
 
