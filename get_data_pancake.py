@@ -47,17 +47,14 @@ for i in range(5):
                 else:
                     df = df.append({"name": each['name'], "gender": each['gender'], "address": "",
                                    "mobile": each['phone_numbers'], "source_lead": "BOT", "note": "FB", "page_id": page_id}, ignore_index=True)
-        break
 df = df[df["mobile"].map(lambda r: r != [])]
 df = df[df["mobile"].notna()]
 df = df.fillna("")
-test_df = df.head(3)
 
 mobiles = np.asarray(db_connect.getMobile())
 count = 0
-# print(df.head(20))
 
-for index, row in test_df.iterrows():
+for index, row in df.iterrows():
     name        = row["name"]
     mobile      = row["mobile"]
     gender      = row["gender"]
@@ -71,7 +68,6 @@ for index, row in test_df.iterrows():
     if mobile not in mobiles:
         db_connect.insertData(name, mobile, gender, address, source_lead, note, page_id)
         count += 1
-    else:
         print("Ops something went wrong!!! Your phone number existed in MCI DB")
 db_connect.database.commit()
 db_connect.database.close()
